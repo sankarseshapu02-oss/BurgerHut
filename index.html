@@ -1,0 +1,1171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>BurgerHut — Taste of Perfection</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#071018;
+      --card:#0f1720;
+      --accent:#e21d1d;
+      --muted:#cfcfcf;
+      --glass: rgba(255,255,255,0.04);
+      --success:#3ddc84;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: "Roboto", sans-serif;
+      background: linear-gradient(180deg,#071018 0%, #071018 60%, #0a0f12 100%);
+      color:#fff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* header */
+    header{
+      position:fixed;
+      top:0;
+      left:0;
+      right:0;
+      height:78px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:12px 48px;
+      z-index:50;
+      background: linear-gradient(180deg, rgba(7,16,24,0.85) 0%, rgba(7,16,24,0.35) 100%);
+      border-bottom: 1px solid rgba(255,255,255,0.02);
+    }
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .logo img{height:52px;width:auto}
+    .nav{
+      display:flex;
+      gap:28px;
+      align-items:center;
+      font-family: "Merriweather", serif;
+    }
+    .nav a{
+      color:#fff;
+      text-decoration:none;
+      font-size:18px;
+      opacity:0.95;
+    }
+    .nav a:hover{color:var(--accent)}
+    .cart-btn{
+      background:var(--accent);
+      padding:8px 14px;
+      border-radius:8px;
+      color:white;
+      border:none;
+      cursor:pointer;
+      font-weight:600;
+      box-shadow:0 6px 18px rgba(226,29,29,0.18);
+    }
+
+    /* hero */
+    .hero{
+      margin-top:78px;
+      min-height:640px;
+      display:grid;
+      grid-template-columns: 1fr 540px;
+      gap:36px;
+      align-items:center;
+      padding:40px 8vw;
+      background: linear-gradient(90deg, rgba(7,16,24,1) 0%, rgba(7,16,24,0.85) 55%, rgba(7,16,24,0.1) 100%);
+      position:relative;
+      overflow:hidden;
+    }
+    .hero-left{
+      max-width:720px;
+    }
+    h1{
+      font-family: "Merriweather", serif;
+      font-size:84px;
+      margin:0 0 18px 0;
+      line-height:0.98;
+      color:#fff;
+      text-shadow:0 10px 30px rgba(0,0,0,0.6);
+    }
+    .sub{
+      font-size:28px;
+      color:var(--muted);
+      margin-bottom:26px;
+    }
+    .cta{
+      display:inline-block;
+      padding:14px 28px;
+      background:var(--accent);
+      color:#fff;
+      border-radius:10px;
+      text-decoration:none;
+      font-weight:700;
+      box-shadow:0 10px 25px rgba(226,29,29,0.2);
+    }
+
+    /* hero right image */
+    .hero-right{
+      position:relative;
+      height:520px;
+      border-radius:12px;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .hero-right img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    /* sections */
+    section{
+      padding:86px 8vw;
+    }
+    .about{
+      display:flex;
+      gap:40px;
+      align-items:center;
+      color:var(--muted);
+    }
+    .about .card{
+      background:var(--glass);
+      padding:28px;
+      border-radius:12px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+    }
+    .menu-grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+      gap:22px;
+      margin-top:22px;
+    }
+    .item{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      border-radius:12px;
+      padding:12px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .item img{width:110px;height:90px;object-fit:cover;border-radius:8px}
+    .item .meta{flex:1}
+    .item h4{margin:4px 0 6px 0;font-family:Merriweather}
+    .price{font-weight:700;color:var(--accent)}
+    .add{
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.06);
+      padding:8px 10px;
+      border-radius:8px;
+      color:#fff;
+      cursor:pointer;
+      font-weight:600;
+    }
+
+    /* cart panel */
+    .cart-panel{
+      position:fixed;
+      right:20px;
+      top:98px;
+      width:360px;
+      max-height:72vh;
+      background: linear-gradient(180deg, rgba(12,18,22,0.98), rgba(12,18,22,0.92));
+      border-radius:12px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+      padding:18px;
+      overflow:auto;
+      transform:translateY(0);
+      z-index:80;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .cart-item{display:flex;gap:12px;align-items:center;padding:8px 0;border-bottom:1px dashed rgba(255,255,255,0.03)}
+    .cart-item img{width:60px;height:50px;object-fit:cover;border-radius:8px}
+    .qty-controls{display:flex;gap:6px;align-items:center}
+    .small-btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:6px 8px;border-radius:6px;cursor:pointer;color:#fff}
+
+    /* Payment modal (added) */
+    .modal-backdrop{
+      position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:200;display:flex;align-items:center;justify-content:center;
+    }
+    .payment-modal{
+      width:720px;
+      max-width:94%;
+      background:linear-gradient(180deg,#071218,#0c161a);
+      border-radius:12px;padding:18px;border:1px solid rgba(255,255,255,0.04);
+      box-shadow:0 30px 80px rgba(0,0,0,0.7);
+      color:#fff;font-family:Roboto;
+    }
+    .pm-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+    .pm-methods{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+    .pm-method{
+      padding:8px 12px;border-radius:8px;background:rgba(255,255,255,0.02);cursor:pointer;border:1px solid rgba(255,255,255,0.02);
+    }
+    .pm-method.active{background:linear-gradient(180deg, rgba(226,29,29,0.12), rgba(226,29,29,0.06));border-color:rgba(226,29,29,0.3)}
+    .pm-body{display:flex;gap:18px}
+    .pm-left{flex:1}
+    .pm-right{width:260px;flex-shrink:0;background:rgba(255,255,255,0.02);padding:12px;border-radius:8px}
+    .qr-box{
+      width:190px;height:190px;border-radius:6px;background:linear-gradient(180deg,#fff,#ddd);display:flex;align-items:center;justify-content:center;color:#0b0b0b;margin-bottom:8px;
+      font-weight:700;font-size:14px;
+    }
+    .input{display:block;width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:#fff;margin-bottom:8px}
+    .pm-note{font-size:13px;color:var(--muted);margin-top:8px}
+    .close-x{background:transparent;color:var(--muted);border:none;font-size:18px;cursor:pointer}
+
+    /* success popup */
+    .success-popup{
+      position:fixed;right:20px;bottom:20px;background:linear-gradient(180deg,#062b0f,#0a3f22);padding:14px 18px;border-radius:12px;color:#eafff0;z-index:300;box-shadow:0 20px 60px rgba(10,50,20,0.6);display:flex;gap:12px;align-items:center;
+    }
+
+    /* Orders / Tracking section */
+    .orders-grid{display:flex;gap:18px;flex-wrap:wrap}
+    .order-card{background:var(--glass);padding:14px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);width:320px}
+    .progress{
+      height:10px;background:rgba(255,255,255,0.06);border-radius:8px;margin-top:8px;overflow:hidden;
+    }
+    .progress > i{display:block;height:100%;background:linear-gradient(90deg,#ffd89b,#ff6a00);width:0%;transition:width 700ms ease}
+
+    /* forms */
+    form .row{display:flex;gap:12px}
+    input,textarea,select{
+      background:transparent;border:1px solid rgba(255,255,255,0.08);padding:10px;border-radius:8px;color:#fff;width:100%;
+    }
+    .btn-primary{background:var(--accent);border:none;padding:12px 16px;border-radius:8px;font-weight:700;cursor:pointer;color:#fff}
+
+    /* footer */
+    footer{padding:36px 8vw;background:linear-gradient(180deg, rgba(7,16,24,0.5), rgba(7,16,24,0.9));color:var(--muted)}
+    footer .foot-grid{display:flex;gap:30px;flex-wrap:wrap}
+
+    /* responsive */
+    @media (max-width:1000px){
+      .hero{grid-template-columns:1fr; padding:30px 6vw; min-height:640px}
+      h1{font-size:56px}
+      .hero-right{height:420px}
+      header{padding:10px 18px}
+      .nav{display:none}
+      .pm-body{flex-direction:column}
+      .pm-right{width:100%}
+    }
+    @media (max-width:600px){
+      h1{font-size:38px}
+      .hero-right{height:320px}
+      .cart-panel{display:none}
+    }
+
+    /* small helpers */
+    .badge{background:rgba(255,255,255,0.05);padding:6px 8px;border-radius:10px;font-weight:700}
+    .muted{color:var(--muted)}
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <!-- Put your logo file here (suggested name: logo.png) -->
+      <img src="logo.png" alt="BurgerHut Logo" onerror="this.style.display='none'">
+      <div>
+        <div style="font-family:Merriweather;font-weight:900;font-size:20px">BurgerHut</div>
+        <div class="muted" style="font-size:12px">Taste of Perfection</div>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#menu">Menu</a>
+      <a href="#reserve">Reservations</a>
+      <a href="#orders">Orders</a>
+      <a href="#contact">Contact</a>
+      <button class="cart-btn" id="openCartBtn">Cart (<span id="cartCount">0</span>)</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero" id="home">
+      <div class="hero-left">
+        <h1>Welcome to Berger Hut</h1>
+        <div class="sub">Experience the Taste of Perfection</div>
+        <a class="cta" href="#menu">Explore Our Menu</a>
+        <div style="margin-top:22px;color:var(--muted)">Open daily: <span class="badge">10:00 AM - 11:00 PM</span></div>
+      </div>
+      <div class="hero-right" aria-hidden="true">
+        <!-- using uploaded screenshot as hero image (local path) -->
+        <img src="Burger.jpg" alt="Burger hero">
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div style="max-width:1200px;margin:0 auto">
+        <h2 style="font-family:Merriweather;font-size:34px;margin-bottom:8px">About BurgerHut</h2>
+        <div class="about">
+          <div style="flex:1">
+            <div class="card">
+              <p style="font-size:18px;color:var(--muted);line-height:1.6">
+                BurgerHut crafts the juiciest burgers using carefully sourced ingredients and old-school grilling techniques.
+                We believe in bold flavors, melting cheese, and perfectly toasted buns — served fast with a smile.
+              </p>
+              <ul style="color:var(--muted);margin-top:8px">
+                <li>Fresh patties daily</li>
+                <li>Locally sourced vegetables</li>
+                <li>Gluten free and vegetarian options available</li>
+              </ul>
+            </div>
+          </div>
+          <div style="width:420px">
+            <img src="about-burger.jpg" alt="About burger" style="width:100%;border-radius:10px;object-fit:cover" onerror="this.style.display='none'">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MENU -->
+    <section id="menu" style="background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);">
+      <div style="max-width:1200px;margin:0 auto">
+        <h2 style="font-family:Merriweather;font-size:34px;margin-bottom:6px">Our Menu</h2>
+        <div style="display:flex;gap:12px;align-items:center;margin-bottom:16px;flex-wrap:wrap">
+          <button class="badge" onclick="filterMenu('all')">All</button>
+          <button class="badge" onclick="filterMenu('burgers')">Burgers</button>
+          <button class="badge" onclick="filterMenu('sides')">Sides</button>
+          <button class="badge" onclick="filterMenu('drinks')">Drinks</button>
+          <button class="badge" onclick="filterMenu('desserts')">Desserts</button>
+          <button class="badge" onclick="filterMenu('combos')">Combos</button>
+        </div>
+
+        <div class="menu-grid" id="menuGrid">
+          <!-- items will be injected by script -->
+        </div>
+      </div>
+    </section>
+
+    <!-- RESERVATIONS -->
+    <section id="reserve">
+      <div style="max-width:900px;margin:0 auto">
+        <h2 style="font-family:Merriweather;font-size:34px;margin-bottom:6px">Reservations</h2>
+        <div style="display:flex;gap:24px;flex-wrap:wrap">
+          <div style="flex:1;min-width:320px">
+            <form id="resForm" class="card" style="padding:18px">
+              <div style="margin-bottom:8px;color:var(--muted)">Book a table</div>
+              <div style="display:flex;gap:10px;margin-bottom:10px">
+                <input type="text" id="resName" placeholder="Full name" required>
+                <input type="tel" id="resPhone" placeholder="Phone" required>
+              </div>
+              <div style="display:flex;gap:10px;margin-bottom:10px">
+                <input type="date" id="resDate" required>
+                <input type="time" id="resTime" required>
+              </div>
+              <div style="display:flex;gap:10px;margin-bottom:10px">
+                <select id="resPeople" required>
+                  <option value="">Number of people</option>
+                  <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6+</option>
+                </select>
+                <input type="text" id="resNotes" placeholder="Notes (optional)">
+              </div>
+              <button class="btn-primary" type="submit">Confirm Reservation</button>
+              <div id="resMsg" style="margin-top:12px;color:lightgreen;display:none">Reservation saved!</div>
+            </form>
+          </div>
+
+          <div style="flex:1;min-width:320px">
+            <div class="card" style="padding:18px">
+              <h3 style="margin-top:0;font-family:Merriweather">Visit Us</h3>
+              <p class="muted">123 Flavor Street, Food City</p>
+              <p class="muted">Phone: +91 6300348255</p>
+              <p class="muted">Email: sankarseshapu02@gmail.com</p>
+              <div style="height:220px;background:#061018;border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--muted);margin-top:8px">
+                Map placeholder
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ORDERS / TRACKING (ADDED) -->
+    <section id="orders">
+      <div style="max-width:1200px;margin:0 auto">
+        <h2 style="font-family:Merriweather;font-size:34px;margin-bottom:6px">Your Orders & Tracking</h2>
+        <div style="display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap">
+          <div style="flex:1;min-width:360px">
+            <div class="card" style="padding:14px">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div style="font-weight:700">Track an order</div>
+                <div class="muted" style="font-size:13px">Real-time simulated tracking</div>
+              </div>
+              <div style="margin-top:12px">
+                <input id="trackOrderId" class="input" placeholder="Enter Order ID (e.g. ORD123456789)" />
+                <div style="display:flex;gap:8px;margin-top:8px">
+                  <button class="btn-primary" id="trackBtn">Track</button>
+                  <button class="small-btn" id="refreshOrders">Refresh List</button>
+                </div>
+                <div id="trackResult" style="margin-top:12px"></div>
+              </div>
+            </div>
+
+            <div style="margin-top:12px">
+              <div style="font-weight:700;margin-bottom:8px">Recent Orders</div>
+              <div id="ordersList" class="orders-grid"></div>
+            </div>
+          </div>
+
+          <div style="width:360px;min-width:260px">
+            <div class="card" style="padding:12px">
+              <div style="font-weight:700">Order ETA Helper</div>
+              <div class="muted" style="margin-top:8px">Estimated times are simulated. Real delivery requires integration with delivery partner APIs.</div>
+              <div style="margin-top:12px">
+                <label class="muted">Default delivery speed</label>
+                <select id="defaultSpeed" class="input">
+                  <option value="45">Standard (45 min)</option>
+                  <option value="30">Fast (30 min)</option>
+                  <option value="60">Slow (60 min)</option>
+                </select>
+                <div style="margin-top:10px">
+                  <button class="btn-primary" id="setSpeedBtn">Set Preference</button>
+                </div>
+                <div id="speedMsg" style="margin-top:10px;color:lightgreen;display:none">Preference saved!</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div style="max-width:900px;margin:0 auto">
+        <h2 style="font-family:Merriweather;font-size:34px;margin-bottom:6px">Contact Us</h2>
+        <form id="contactForm" class="card" style="padding:20px">
+          <div class="row" style="margin-bottom:10px">
+            <input type="text" id="cname" placeholder="Your name" required>
+            <input type="email" id="cemail" placeholder="Email" required>
+          </div>
+          <div style="margin-bottom:10px">
+            <input type="text" id="subject" placeholder="Subject" required>
+          </div>
+          <div style="margin-bottom:10px">
+            <textarea id="cmessage" rows="5" placeholder="Message" required style="width:100%"></textarea>
+          </div>
+          <button class="btn-primary" type="submit">Send Message</button>
+          <div id="cmsg" style="margin-top:10px;color:lightgreen;display:none">Thanks! Message received.</div>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- CART PANEL -->
+  <aside class="cart-panel" id="cartPanel" aria-hidden="true" style="display:none">
+    <h3 style="margin-top:0;font-family:Merriweather">Your Cart</h3>
+    <div id="cartItems"></div>
+    <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center">
+      <div style="font-weight:700">Total: <span id="cartTotal">₹0</span></div>
+      <div style="display:flex;gap:8px">
+        <button class="small-btn" id="clearCartBtn">Clear</button>
+        <button class="btn-primary" id="checkoutBtn">Checkout</button>
+      </div>
+    </div>
+    <div id="checkoutMsg" style="margin-top:12px;color:lightgreen;display:none">Checkout simulated — order placed!</div>
+  </aside>
+
+  <!-- Payment modal (hidden by default) -->
+  <div id="paymentModal" style="display:none" aria-hidden="true">
+    <div class="modal-backdrop" id="pmBackdrop">
+      <div class="payment-modal" role="dialog" aria-modal="true" aria-labelledby="pmTitle">
+        <div class="pm-header">
+          <div>
+            <div id="pmTitle" style="font-family:Merriweather;font-size:18px">Select Payment Method</div>
+            <div class="muted" style="font-size:13px">Secure payment — simulated</div>
+          </div>
+          <div>
+            <button class="close-x" id="pmClose">&times;</button>
+          </div>
+        </div>
+
+        <div class="pm-methods" id="pmMethods">
+          <div class="pm-method active" data-method="cod">Cash on Delivery</div>
+          <div class="pm-method" data-method="upi">UPI (copy ID / QR)</div>
+          <div class="pm-method" data-method="card">Card (Debit/Credit)</div>
+          <div class="pm-method" data-method="qr">QR Pay (Scan)</div>
+        </div>
+
+        <div class="pm-body">
+          <div class="pm-left">
+            <!-- COD content -->
+            <div class="pm-content" data-content="cod">
+              <div style="font-weight:700;margin-bottom:8px">Cash on Delivery</div>
+              <div class="pm-note">You pay in cash to the delivery person when your order arrives.</div>
+              <div style="margin-top:12px">
+                <button class="btn-primary" id="payCodBtn">Confirm COD</button>
+              </div>
+            </div>
+
+            <!-- UPI content -->
+            <div class="pm-content" data-content="upi" style="display:none">
+              <div style="font-weight:700;margin-bottom:8px">UPI Payment</div>
+              <div class="muted pm-note">Scan the QR or copy the UPI ID below and pay using your UPI app (PhonePe/GPay/Paytm etc.)</div>
+
+              <div style="margin-top:12px;display:flex;gap:12px;align-items:flex-start">
+                <div>
+                  <!-- QR-like placeholder (for offline demo) -->
+                  <div class="qr-box" id="upiQr">QR</div>
+                </div>
+                <div style="flex:1">
+                  <div style="font-weight:700;margin-bottom:6px">UPI ID</div>
+                  <div style="display:flex;gap:8px;align-items:center">
+                    <input readonly class="input" id="upiId" value="sankar@upi">
+                    <button class="small-btn" id="copyUpi">Copy</button>
+                  </div>
+                  <div class="pm-note">After payment, click "I paid" to confirm.</div>
+                  <div style="margin-top:10px">
+                    <button class="btn-primary" id="confirmUpiBtn">I Paid — Confirm</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card content -->
+            <div class="pm-content" data-content="card" style="display:none">
+              <div style="font-weight:700;margin-bottom:8px">Card Payment</div>
+              <div class="muted pm-note">Enter card details below. This is a simulated card payment form. Card data will NOT be stored — only a payment token is created.</div>
+              <div style="margin-top:10px">
+                <input class="input" id="cardName" placeholder="Name on card" autocomplete="cc-name" />
+                <input class="input" id="cardNumber" placeholder="Card number (16 digits)" maxlength="19" inputmode="numeric" autocomplete="cc-number" />
+                <div style="display:flex;gap:8px">
+                  <input class="input" id="cardExpiry" placeholder="MM/YY" maxlength="5" autocomplete="cc-exp" style="flex:1"/>
+                  <input class="input" id="cardCvv" placeholder="CVV" maxlength="4" autocomplete="cc-csc" style="width:110px"/>
+                </div>
+                <div style="margin-top:10px">
+                  <button class="btn-primary" id="payCardBtn">Pay Now</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- QR Pay content -->
+            <div class="pm-content" data-content="qr" style="display:none">
+              <div style="font-weight:700;margin-bottom:8px">QR Pay (Scan)</div>
+              <div class="muted pm-note">Open your UPI app and scan the QR below. After payment click confirm.</div>
+              <div style="margin-top:12px">
+                <div class="qr-box" id="scanQr">SCAN</div>
+                <div style="margin-top:8px;display:flex;gap:8px">
+                  <button class="btn-primary" id="confirmQrBtn">I Paid — Confirm</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="pm-right">
+            <div style="font-weight:700">Order Summary</div>
+            <div style="margin-top:8px" id="pmSummaryList"></div>
+            <div style="margin-top:12px;font-weight:700">Amount: <span id="pmAmount">₹0</span></div>
+            <div class="pm-note" style="margin-top:8px">This is a demo payment panel. No real money will be charged unless integrated with a payment gateway.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- success popup (hidden) -->
+  <div id="successPopup" style="display:none" class="success-popup" role="status" aria-live="polite">
+    <div style="font-weight:700">Order Confirmed</div>
+    <div id="successDesc" style="font-size:13px;color:#e9ffef;margin-left:6px">Your order ORD... placed successfully</div>
+  </div>
+
+  <footer>
+    <div style="max-width:1200px;margin:0 auto">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap">
+        <div>
+          <div style="font-family:Merriweather;font-size:18px">BurgerHut</div>
+          <div class="muted" style="font-size:13px">© <span id="year"></span> BurgerHut. All rights reserved.</div>
+        </div>
+        <div class="muted">Follow us: Instagram / Facebook / X</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Simple data model for menu items (your original 22 items)
+    const MENU = [
+      // Burgers
+      {id: "b1", category:"burgers", name:"Classic Cheeseburger", price:179, img:"burger-classic.jpg", desc:"Juicy beef, cheddar, lettuce, tomato, signature sauce"},
+      {id: "b2", category:"burgers", name:"Double Patty Deluxe", price:299, img:"burger-double.jpg", desc:"Two patties, double cheese, caramelized onions"},
+      {id: "b3", category:"burgers", name:"Veggie Delight", price:149, img:"burger-veggie.jpg", desc:"Crisp veg patty, fresh greens, house mayo"},
+      {id: "b4", category:"burgers", name:"Bacon Blast", price:229, img:"burger-bacon.jpg", desc:"Crispy bacon, cheddar, smoky BBQ sauce"},
+      {id: "b5", category:"burgers", name:"Spicy Jalapeno", price:199, img:"burger-jalapeno.jpg", desc:"Pepper jack, jalapeños, spicy aioli"},
+      {id: "b6", category:"burgers", name:"Mushroom Swiss", price:219, img:"burger-mushroom.jpg", desc:"Sautéed mushrooms, Swiss cheese, garlic butter"},
+      {id: "b7", category:"burgers", name:"Teriyaki Chicken Burger", price:239, img:"burger-chicken.jpg", desc:"Grilled chicken, teriyaki glaze, slaw"},
+      {id: "b8", category:"burgers", name:"BBQ Pulled Pork", price:249, img:"burger-pulledpork.jpg", desc:"Slow-cooked pulled pork, slaw, smoky BBQ"},
+      // Sides
+      {id: "s1", category:"sides", name:"Crispy Fries", price:89, img:"fries.jpg", desc:"Golden fried shoestring potatoes"},
+      {id: "s2", category:"sides", name:"Onion Rings", price:99, img:"onion-rings.jpg", desc:"Beer-battered onion rings"},
+      {id: "s3", category:"sides", name:"Cheesy Wedges", price:129, img:"potato-wedges.jpg", desc:"Seasoned wedges with melted cheese"},
+      {id: "s4", category:"sides", name:"Garlic Parmesan Fries", price:119, img:"garlic-fries.jpg", desc:"Fries tossed in garlic and parmesan"},
+      {id: "s5", category:"sides", name:"Loaded Nachos", price:169, img:"nachos.jpg", desc:"Tortilla chips, cheese, salsa, olives"},
+      // Drinks
+      {id: "d1", category:"drinks", name:"Cold Cola", price:49, img:"cola.jpg", desc:"Chilled fizzy drink"},
+      {id: "d2", category:"drinks", name:"Mango Shake", price:119, img:"mango-shake.jpg", desc:"Thick mango shake with ice cream"},
+      {id: "d3", category:"drinks", name:"Lemon Iced Tea", price:79, img:"iced-tea.jpg", desc:"Refreshing lemon tea"},
+      {id: "d4", category:"drinks", name:"Fresh Lime Soda", price:59, img:"lime-soda.jpg", desc:"Zesty lime and soda"},
+      // Desserts
+      {id: "e1", category:"desserts", name:"Chocolate Fudge Cake", price:149, img:"choco-cake.jpg", desc:"Rich chocolate slice with fudge"},
+      {id: "e2", category:"desserts", name:"Vanilla Ice Cream", price:69, img:"vanilla-icecream.jpg", desc:"Classic creamy vanilla scoop"},
+      {id: "e3", category:"desserts", name:"Apple Pie", price:99, img:"apple-pie.jpg", desc:"Warm apple pie with cinnamon"},
+      {id: "e4", category:"desserts", name:"Brownie with Ice Cream", price:159, img:"brownie-icecream.jpg", desc:"Warm brownie and cold ice cream"},
+      // Combos
+      {id: "c1", category:"combos", name:"Classic Combo (Burger + Fries + Drink)", price:299, img:"combo-classic.jpg", desc:"Classic burger paired with fries and a drink"},
+      {id: "c2", category:"combos", name:"Double Deluxe Combo", price:399, img:"combo-double.jpg", desc:"Double patty, wedges, and shake"},
+      {id: "c3", category:"combos", name:"Veggie Combo", price:249, img:"combo-veggie.jpg", desc:"Veggie burger, fries, and iced tea"}
+    ];
+
+    // initialize
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // render menu
+    const menuGrid = document.getElementById('menuGrid');
+    function renderMenu(items){
+      menuGrid.innerHTML = '';
+      items.forEach(it=>{
+        const el = document.createElement('div');
+        el.className = 'item';
+        el.innerHTML = `
+          <img src="${it.img}" alt="${it.name}" onerror="this.style.display='none'">
+          <div class="meta">
+            <h4>${it.name}</h4>
+            <div class="muted" style="font-size:13px">${it.desc}</div>
+            <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center">
+              <div class="price">₹${it.price}</div>
+              <div>
+                <button class="add" onclick="addToCart('${it.id}')">Add</button>
+              </div>
+            </div>
+          </div>
+        `;
+        menuGrid.appendChild(el);
+      });
+    }
+    renderMenu(MENU);
+
+    // filter
+    function filterMenu(cat){
+      if(cat === 'all') renderMenu(MENU);
+      else renderMenu(MENU.filter(i=>i.category === cat));
+      window.location.hash = '#menu';
+    }
+
+    // CART logic using localStorage
+    const CART_KEY = 'burgerhut_cart_v1';
+    function getCart(){ return JSON.parse(localStorage.getItem(CART_KEY) || '{}'); }
+    function saveCart(c){ localStorage.setItem(CART_KEY, JSON.stringify(c)); updateCartUI(); }
+
+    function addToCart(id){
+      const cart = getCart();
+      cart[id] = (cart[id]||0) + 1;
+      saveCart(cart);
+      flashCartCount();
+    }
+
+    function removeFromCart(id){
+      const cart = getCart();
+      delete cart[id];
+      saveCart(cart);
+    }
+
+    function changeQty(id, qty){
+      const cart = getCart();
+      if(qty <= 0) delete cart[id];
+      else cart[id] = qty;
+      saveCart(cart);
+    }
+
+    function clearCart(){
+      localStorage.removeItem(CART_KEY);
+      updateCartUI();
+    }
+
+    // UI for cart
+    function updateCartUI(){
+      const cart = getCart();
+      const itemsEl = document.getElementById('cartItems');
+      const cartCountEl = document.getElementById('cartCount');
+      let total = 0, count = 0;
+      itemsEl.innerHTML = '';
+      for(const id in cart){
+        const qty = cart[id];
+        const item = MENU.find(m=>m.id===id);
+        if(!item) continue;
+        const row = document.createElement('div');
+        row.className = 'cart-item';
+        row.innerHTML = `
+          <img src="${item.img}" alt="${item.name}" onerror="this.style.display='none'">
+          <div style="flex:1">
+            <div style="font-weight:700">${item.name}</div>
+            <div class="muted">₹${item.price} x ${qty}</div>
+            <div style="margin-top:8px;display:flex;gap:8px;align-items:center">
+              <div class="qty-controls">
+                <button class="small-btn" onclick="changeQty('${id}', ${qty-1})">-</button>
+                <span style="padding:6px 8px;border-radius:6px;background:rgba(255,255,255,0.02)">${qty}</span>
+                <button class="small-btn" onclick="changeQty('${id}', ${qty+1})">+</button>
+              </div>
+              <button class="small-btn" onclick="removeFromCart('${id}')">Remove</button>
+            </div>
+          </div>
+        `;
+        itemsEl.appendChild(row);
+        total += item.price * qty;
+        count += qty;
+      }
+      document.getElementById('cartTotal').textContent = '₹' + total;
+      cartCountEl.textContent = count;
+      if(count === 0) itemsEl.innerHTML = '<div class="muted">Your cart is empty</div>';
+    }
+
+    function flashCartCount(){
+      const el = document.getElementById('cartCount');
+      el.style.transition = 'transform .15s';
+      el.style.transform = 'scale(1.4)';
+      setTimeout(()=>el.style.transform='scale(1)',180);
+    }
+
+    // cart panel open/close
+    const cartPanel = document.getElementById('cartPanel');
+    const openCartBtn = document.getElementById('openCartBtn');
+    openCartBtn.addEventListener('click', ()=>{
+      if(cartPanel.style.display === 'none' || cartPanel.style.display === ''){
+        cartPanel.style.display = 'block';
+        cartPanel.setAttribute('aria-hidden','false');
+      } else {
+        cartPanel.style.display = 'none';
+        cartPanel.setAttribute('aria-hidden','true');
+      }
+      updateCartUI();
+    });
+
+    document.getElementById('clearCartBtn').addEventListener('click', ()=>{
+      if(confirm('Clear cart?')) clearCart();
+    });
+
+    // ---------- Payment modal logic (improved & secure-sim) ----------
+    const paymentModal = document.getElementById('paymentModal');
+    const pmBackdrop = document.getElementById('pmBackdrop');
+    const pmClose = document.getElementById('pmClose');
+    const pmMethods = document.getElementById('pmMethods');
+    const pmContents = document.querySelectorAll('.pm-content');
+    const pmSummaryList = document.getElementById('pmSummaryList');
+    const pmAmount = document.getElementById('pmAmount');
+
+    // sanitizer to avoid injecting user values into DOM
+    function sanitizeText(str){
+      return String(str).replace(/[&<>"'`]/g, s=>{
+        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;', '`':'&#96;'}[s];
+      });
+    }
+
+    // secure-ish token (client-side demo only)
+    function generatePaymentToken(){
+      try{
+        return 'pt_' + (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2,12)) + Date.now().toString(36);
+      } catch(e){
+        return 'pt_' + Math.random().toString(36).slice(2,12) + Date.now().toString(36);
+      }
+    }
+
+    function openPaymentModal(){
+      // populate order summary
+      const cart = getCart();
+      let total = 0;
+      pmSummaryList.innerHTML = '';
+      if(Object.keys(cart).length === 0){
+        pmSummaryList.innerHTML = '<div class="muted">Cart empty</div>';
+      } else {
+        for(const id in cart){
+          const item = MENU.find(m=>m.id===id);
+          if(!item) continue;
+          const qty = cart[id];
+          const row = document.createElement('div');
+          row.style.display = 'flex';
+          row.style.justifyContent = 'space-between';
+          row.style.marginBottom = '6px';
+          row.innerHTML = `<div style="font-size:14px">${sanitizeText(item.name)} x ${qty}</div><div style="font-weight:700">₹${item.price * qty}</div>`;
+          pmSummaryList.appendChild(row);
+          total += item.price * qty;
+        }
+      }
+      pmAmount.textContent = '₹' + total;
+      // show modal
+      paymentModal.style.display = 'block';
+      paymentModal.setAttribute('aria-hidden','false');
+      // ensure COD active by default
+      setActiveMethod('cod');
+    }
+
+    function closePaymentModal(){
+      paymentModal.style.display = 'none';
+      paymentModal.setAttribute('aria-hidden','true');
+      // clear card inputs (avoid retaining sensitive info)
+      document.getElementById('cardName').value = '';
+      document.getElementById('cardNumber').value = '';
+      document.getElementById('cardExpiry').value = '';
+      document.getElementById('cardCvv').value = '';
+    }
+
+    pmClose.addEventListener('click', closePaymentModal);
+    pmBackdrop.addEventListener('click', (e)=>{
+      if(e.target === pmBackdrop) closePaymentModal();
+    });
+
+    pmMethods.addEventListener('click', (ev)=>{
+      const m = ev.target.closest('.pm-method');
+      if(!m) return;
+      setActiveMethod(m.dataset.method);
+    });
+
+    function setActiveMethod(method){
+      document.querySelectorAll('.pm-method').forEach(b=>{
+        b.classList.toggle('active', b.dataset.method === method);
+      });
+      pmContents.forEach(c=>{
+        c.style.display = (c.dataset.content === method) ? '' : 'none';
+      });
+    }
+
+    // override checkoutBtn behavior: show payment modal
+    document.getElementById('checkoutBtn').addEventListener('click', ()=>{
+      const cart = getCart();
+      if(Object.keys(cart).length === 0){ alert('Cart is empty'); return; }
+      openPaymentModal();
+    });
+
+    // COD flow
+    document.getElementById('payCodBtn').addEventListener('click', ()=>{
+      finalizeOrder({method:'COD', detail:'Cash on Delivery'}, false);
+    });
+
+    // UPI copy
+    document.getElementById('copyUpi').addEventListener('click', ()=>{
+      const upi = document.getElementById('upiId').value;
+      navigator.clipboard?.writeText(upi).then(()=>{ alert('UPI ID copied: ' + upi); }).catch(()=>{ alert('Copy failed — select and copy: ' + upi); });
+    });
+    document.getElementById('confirmUpiBtn').addEventListener('click', ()=>{
+      finalizeOrder({method:'UPI', detail: document.getElementById('upiId').value}, true);
+    });
+
+    // QR confirm
+    document.getElementById('confirmQrBtn').addEventListener('click', ()=>{
+      finalizeOrder({method:'QR', detail:'QR Scan'}, true);
+    });
+
+    // Card payment: validate, tokenise, mask, then finalize
+    document.getElementById('payCardBtn').addEventListener('click', ()=>{
+      const name = document.getElementById('cardName').value.trim();
+      const number = document.getElementById('cardNumber').value.replace(/\s+/g,'');
+      const expiry = document.getElementById('cardExpiry').value.trim();
+      const cvv = document.getElementById('cardCvv').value.trim();
+
+      if(!name || !number || !expiry || !cvv){ alert('Please fill card details'); return; }
+      if(!/^\d{12,19}$/.test(number)){ alert('Card number invalid'); return; }
+      if(!/^\d{2}\/\d{2}$/.test(expiry)){ alert('Expiry must be MM/YY'); return; }
+      if(!/^\d{3,4}$/.test(cvv)){ alert('CVV invalid'); return; }
+
+      // Simulate secure tokenization — do not store raw card data
+      const token = generatePaymentToken();
+      const last4 = number.slice(-4);
+      // Clear sensitive inputs immediately
+      document.getElementById('cardNumber').value = '';
+      document.getElementById('cardExpiry').value = '';
+      document.getElementById('cardCvv').value = '';
+
+      // Simulate card processing delay
+      const btn = document.getElementById('payCardBtn');
+      btn.disabled = true; btn.textContent = 'Processing...';
+      setTimeout(()=>{
+        btn.disabled = false; btn.textContent = 'Pay Now';
+        finalizeOrder({method:'Card', detail:`Card ending ${last4}`, paymentToken: token}, true);
+      }, 1400);
+    });
+
+    // Finalize order (common)
+    // secure = true means payment was "online" (card/upi/qr) and considered paid
+    function finalizeOrder(paymentInfo, secure=true){
+      const cart = getCart();
+      if(Object.keys(cart).length === 0){ alert('Cart empty'); return; }
+
+      // Compute total
+      let total = 0;
+      for(const id in cart){
+        const item = MENU.find(m=>m.id===id);
+        if(!item) continue;
+        total += item.price * cart[id];
+      }
+
+      const order = {
+        id: 'ORD' + Date.now().toString(36).toUpperCase(),
+        items: cart,
+        total: total,
+        payment: {
+          method: sanitizeText(paymentInfo.method),
+          detail: sanitizeText(paymentInfo.detail || ''),
+          token: paymentInfo.paymentToken ? paymentInfo.paymentToken : null,
+          secure: !!secure,
+          created: new Date().toISOString()
+        },
+        status: secure ? 'Confirmed' : 'Pending',
+        etaMinutes: getDefaultEtaMinutes(),
+        createdAt: new Date().toISOString()
+      };
+
+      // Save order (localStorage for demo)
+      const orders = JSON.parse(localStorage.getItem('burgerhut_orders_v1') || '[]');
+      orders.unshift(order);
+      localStorage.setItem('burgerhut_orders_v1', JSON.stringify(orders));
+
+      // Clear cart
+      clearCart();
+
+      // Show friendly success popup and go to Orders
+      showSuccessPopup(order.id, order.etaMinutes);
+      closePaymentModal();
+      refreshOrdersList();
+
+      // Simulate order progress
+      simulateOrderProgress(order.id, order.etaMinutes);
+    }
+
+    // Success popup + UX
+    const successPopup = document.getElementById('successPopup');
+    const successDesc = document.getElementById('successDesc');
+
+    function showSuccessPopup(orderId, eta){
+      successDesc.textContent = `Your order ${orderId} is confirmed — ETA ~ ${eta} min`;
+      successPopup.style.display = 'flex';
+      setTimeout(()=> successPopup.style.opacity = '1', 50);
+      setTimeout(()=>{
+        successPopup.style.transition = 'opacity 400ms';
+        successPopup.style.opacity = '0';
+        setTimeout(()=> successPopup.style.display = 'none', 420);
+      }, 4200);
+
+      // Scroll to Orders
+      document.querySelector('a[href="#orders"]').click();
+    }
+
+    // Orders UI & Tracking
+    const ordersListEl = document.getElementById('ordersList');
+
+    function getSavedOrders(){ return JSON.parse(localStorage.getItem('burgerhut_orders_v1') || '[]'); }
+
+    function refreshOrdersList(){
+      const orders = getSavedOrders();
+      ordersListEl.innerHTML = '';
+      if(orders.length === 0){
+        ordersListEl.innerHTML = '<div class="muted">No orders yet.</div>';
+        return;
+      }
+      orders.forEach(o=>{
+        const card = document.createElement('div');
+        card.className = 'order-card';
+        const created = new Date(o.createdAt);
+        card.innerHTML = `
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="font-weight:700">${sanitizeText(o.id)}</div>
+            <div style="font-size:13px" class="muted">${created.toLocaleString()}</div>
+          </div>
+          <div style="margin-top:8px;color:var(--muted);font-size:13px">Payment: ${sanitizeText(o.payment.method)} ${o.payment.detail ? '• ' + sanitizeText(o.payment.detail) : ''}</div>
+          <div style="margin-top:8px;font-weight:700">Total: ₹${o.total}</div>
+          <div style="margin-top:8px">Status: <span style="font-weight:800">${sanitizeText(o.status)}</span></div>
+          <div class="progress" data-order="${o.id}">
+            <i style="width:${statusToProgress(o.status)}%"></i>
+          </div>
+          <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center">
+            <div class="muted" style="font-size:13px" id="eta-${o.id}">ETA: ~ ${Math.ceil(o.etaMinutes)} min</div>
+            <button class="small-btn" onclick="viewOrderDetails('${o.id}')">Details</button>
+          </div>
+        `;
+        ordersListEl.appendChild(card);
+      });
+    }
+
+    function statusToProgress(status){
+      switch(status){
+        case 'Pending': return 6;
+        case 'Confirmed': return 20;
+        case 'Preparing': return 40;
+        case 'On the way': return 70;
+        case 'Arriving soon': return 90;
+        case 'Delivered': return 100;
+        default: return 5;
+      }
+    }
+
+    function viewOrderDetails(orderId){
+      const orders = getSavedOrders();
+      const o = orders.find(x=>x.id === orderId);
+      if(!o){ alert('Order not found'); return; }
+      const items = Object.entries(o.items).map(([id,qty])=>{
+        const it = MENU.find(m=>m.id===id);
+        return `${it ? it.name : id} x ${qty}`;
+      }).join('\n');
+      const message = `Order ${o.id}\nStatus: ${o.status}\nETA: ~ ${Math.ceil(o.etaMinutes)} min\nItems:\n${items}\nPayment: ${o.payment.method} ${o.payment.detail ? '(' + o.payment.detail + ')' : ''}`;
+      alert(message);
+    }
+
+    // Track an order by ID
+    document.getElementById('trackBtn').addEventListener('click', ()=>{
+      const id = document.getElementById('trackOrderId').value.trim();
+      if(!id){ alert('Enter order ID'); return; }
+      const orders = getSavedOrders();
+      const o = orders.find(x => x.id.toLowerCase() === id.toLowerCase());
+      const tr = document.getElementById('trackResult');
+      if(!o){
+        tr.innerHTML = '<div class="muted">Order not found. Check your ID.</div>';
+        return;
+      }
+      tr.innerHTML = `<div style="font-weight:700">Order ${sanitizeText(o.id)}</div>
+                      <div class="muted">Status: ${sanitizeText(o.status)}</div>
+                      <div style="margin-top:6px" class="progress"><i style="width:${statusToProgress(o.status)}%"></i></div>
+                      <div style="margin-top:6px" id="trackEta">ETA: ~ ${Math.ceil(o.etaMinutes)} min</div>`;
+    });
+
+    document.getElementById('refreshOrders').addEventListener('click', ()=> refreshOrdersList());
+
+    // Default ETA preference
+    function getDefaultEtaMinutes(){
+      const prefer = localStorage.getItem('burgerhut_default_eta_min');
+      return prefer ? Number(prefer) : 45;
+    }
+    document.getElementById('setSpeedBtn').addEventListener('click', ()=>{
+      const v = Number(document.getElementById('defaultSpeed').value);
+      localStorage.setItem('burgerhut_default_eta_min', String(v));
+      const el = document.getElementById('speedMsg');
+      el.style.display = 'block';
+      setTimeout(()=> el.style.display = 'none', 2000);
+    });
+    (function initSpeed(){
+      const val = getDefaultEtaMinutes();
+      document.getElementById('defaultSpeed').value = String(val);
+    })();
+
+    // Order progress simulation (client-side demo)
+    function simulateOrderProgress(orderId, etaMinutes){
+      const scale = 6 * 1000; // 1 demo minute = 6 seconds
+      const start = Date.now();
+      const totalMs = Math.max(6*1000, etaMinutes * scale);
+
+      const timeline = [
+        {t: 0.05, status: 'Confirmed'},
+        {t: 0.20, status: 'Preparing'},
+        {t: 0.55, status: 'On the way'},
+        {t: 0.85, status: 'Arriving soon'},
+        {t: 1.00, status: 'Delivered'}
+      ];
+
+      const tick = setInterval(()=>{
+        const orders = getSavedOrders();
+        const idx = orders.findIndex(o=>o.id === orderId);
+        if(idx === -1){ clearInterval(tick); return; }
+        const o = orders[idx];
+        const elapsed = Date.now() - start;
+        const frac = Math.min(1, elapsed / totalMs);
+        let newStatus = o.status;
+        for(const point of timeline){
+          if(frac >= point.t) newStatus = point.status;
+        }
+        const remainingFrac = Math.max(0, 1 - frac);
+        const remainingMinutes = Math.max(0, Math.ceil(remainingFrac * etaMinutes));
+        o.status = newStatus;
+        o.etaMinutes = remainingMinutes;
+        orders[idx] = o;
+        localStorage.setItem('burgerhut_orders_v1', JSON.stringify(orders));
+        refreshOrdersList();
+        const trackInputVal = document.getElementById('trackOrderId').value.trim();
+        if(trackInputVal && trackInputVal.toLowerCase() === orderId.toLowerCase()){
+          document.getElementById('trackResult').innerHTML = `<div style="font-weight:700">Order ${sanitizeText(o.id)}</div>
+                      <div class="muted">Status: ${sanitizeText(o.status)}</div>
+                      <div style="margin-top:6px" class="progress"><i style="width:${statusToProgress(o.status)}%"></i></div>
+                      <div style="margin-top:6px" id="trackEta">ETA: ~ ${Math.ceil(o.etaMinutes)} min</div>`;
+        }
+        if(o.status === 'Delivered') clearInterval(tick);
+      }, 2500);
+    }
+
+    // Resume any unfinished simulations on load
+    function resumeSimulations(){
+      const orders = getSavedOrders();
+      orders.forEach(o=>{
+        if(o.status !== 'Delivered'){
+          const remaining = Math.max(1, Math.min(60, Number(o.etaMinutes) || 10));
+          simulateOrderProgress(o.id, remaining);
+        }
+      });
+    }
+
+    // initial & misc handlers
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', (e)=>{
+        e.preventDefault();
+        const id = a.getAttribute('href').slice(1);
+        const el = document.getElementById(id);
+        if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+      });
+    });
+
+    // expose for inline use
+    window.addToCart = addToCart;
+    window.filterMenu = filterMenu;
+    window.clearCart = clearCart;
+    window.changeQty = changeQty;
+    window.removeFromCart = removeFromCart;
+    window.viewOrderDetails = viewOrderDetails;
+
+    // initialize UI
+    updateCartUI();
+    refreshOrdersList();
+    resumeSimulations();
+
+    // forms: reservations + contact (unchanged)
+    document.getElementById('resForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const name = document.getElementById('resName').value.trim();
+      const phone = document.getElementById('resPhone').value.trim();
+      const date = document.getElementById('resDate').value;
+      const time = document.getElementById('resTime').value;
+      const people = document.getElementById('resPeople').value;
+      const notes = document.getElementById('resNotes').value.trim();
+      if(!name || !phone || !date || !time || !people){ alert('Please fill required fields'); return; }
+      const reservations = JSON.parse(localStorage.getItem('burgerhut_reservations_v1') || '[]');
+      reservations.push({name, phone, date, time, people, notes, created: new Date().toISOString()});
+      localStorage.setItem('burgerhut_reservations_v1', JSON.stringify(reservations));
+      document.getElementById('resMsg').style.display = 'block';
+      setTimeout(()=> document.getElementById('resMsg').style.display='none', 3000);
+      e.target.reset();
+    });
+
+    document.getElementById('contactForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const name = document.getElementById('cname').value.trim();
+      const email = document.getElementById('cemail').value.trim();
+      const subject = document.getElementById('subject').value.trim();
+      const message = document.getElementById('cmessage').value.trim();
+      if(!name || !email || !subject || !message){ alert('Please fill all fields'); return; }
+      console.log('CONTACT_FORM', {name,email,subject,message,ts:new Date().toISOString()});
+      document.getElementById('cmsg').style.display = 'block';
+      setTimeout(()=> document.getElementById('cmsg').style.display='none', 3000);
+      e.target.reset();
+    });
+
+    // Note: This is a client-side simulation. For production:
+    // - Integrate with a real payment gateway (server-side tokenization, 3DS, webhooks).
+    // - Use HTTPS and server-side verification before marking orders as paid.
+  </script>
+</body>
+</html>
